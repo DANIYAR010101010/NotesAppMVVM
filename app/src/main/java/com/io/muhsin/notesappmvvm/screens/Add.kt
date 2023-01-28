@@ -1,4 +1,8 @@
 package com.io.muhsin.notesappmvvm.screens
 
-class Add {
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+
+@Composable
+fun  Add(navController: NavHostController) {
 }
