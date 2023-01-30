@@ -29,10 +29,9 @@ import com.io.muhsin.notesappmvvm.navigation.NavRoute
 import com.io.muhsin.notesappmvvm.ui.theme.NotesAppMVVMTheme
 
 @Composable
-fun MainScreen(navController: NavHostController) {
-    val context = LocalContext.current
-    val mViewModel: MainViewModel =
-        viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
+
+    val notes = viewModel.readAllNotes().observeAsState(listOf()).value
 
     Scaffold(
         floatingActionButton = {
@@ -52,11 +51,11 @@ fun MainScreen(navController: NavHostController) {
             noteItem(title = "Note 3", subtitle = "Subtitle", navController =navController)
             noteItem(title = "Note 4", subtitle = "Subtitle", navController =navController)
         }*/
-       /* LazyColumn{
+       LazyColumn{
             items(notes){ note->
-                NoteItem(note = note , navController=navController )
+                noteItem(note = note , navController=navController )
             }
-        }*/
+        }
 
     }
 }
@@ -87,6 +86,9 @@ fun noteItem(note: Note,navController:NavController){
 @Composable
 fun prevMainScreen() {
     NotesAppMVVMTheme {
-        MainScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel =
+            viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+        MainScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }
