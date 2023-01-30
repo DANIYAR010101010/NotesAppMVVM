@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.io.muhsin.notesappmvvm.navigation.notesNavHost
 import com.io.muhsin.notesappmvvm.ui.theme.NotesAppMVVMTheme
+import com.io.muhsin.notesappmvvm.utils.Constants.Keys.NOTES_APP
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
                Scaffold(
                    topBar = {
-                         TopAppBar(title = { Text(text = "Notes App")},
+                         TopAppBar(title = { Text(text = NOTES_APP)},
                                    backgroundColor = Color.Blue,
                                     contentColor = Color.White,
                                     elevation = 12.dp

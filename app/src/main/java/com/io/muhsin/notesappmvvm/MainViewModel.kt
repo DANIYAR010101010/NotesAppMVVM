@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.io.muhsin.notesappmvvm.database.room.AppRoomDataBase
 import com.io.muhsin.notesappmvvm.database.room.repository.RoomRepository
 import com.io.muhsin.notesappmvvm.model.Note
+import com.io.muhsin.notesappmvvm.utils.Constants.Keys.UNKNOWN_VM_CLASS
 import com.io.muhsin.notesappmvvm.utils.REPOSITORY
 import com.io.muhsin.notesappmvvm.utils.TYPE_FIREBASE
 import com.io.muhsin.notesappmvvm.utils.TYPE_ROOM
@@ -15,7 +16,7 @@ import java.lang.IllegalArgumentException
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
 
-    val context = application
+    private val context = application
 
     fun initDataBase(type:String,onSucces:() -> Unit){
         Log.e("checkData","MainViewModel initDataBase with type :$type")
@@ -37,6 +38,25 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
       }
 
     }
+    fun updateNote(note: Note,onSucces: () -> Unit){
+        viewModelScope.launch (Dispatchers.IO ){
+            REPOSITORY.update(note = note){
+                viewModelScope.launch (Dispatchers.Main){
+                    onSucces()
+                }
+            }
+        }
+    }
+    fun deleteNote(note: Note,onSucces: () -> Unit){
+        viewModelScope.launch (Dispatchers.IO ){
+            REPOSITORY.delete(note = note){
+                viewModelScope.launch (Dispatchers.Main){
+                    onSucces()
+                }
+            }
+        }
+    }
+
     fun readAllNotes() = REPOSITORY.readAll
 }
 
@@ -47,6 +67,6 @@ class MainViewModelFactory(private val application: Application):
             return MainViewModel(application = application) as T
 
         }
-        throw  IllegalArgumentException("Unknown ViewModel class")
+        throw  IllegalArgumentException(UNKNOWN_VM_CLASS)
     }
 }
